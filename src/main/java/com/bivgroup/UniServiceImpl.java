@@ -2,13 +2,22 @@ package com.bivgroup;
 
 import com.bivgroup.Uni;
 
+import javax.annotation.security.DenyAll;
+import javax.annotation.security.RolesAllowed;
+import javax.ejb.Stateless;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
+import java.nio.charset.Charset;
+import java.security.Principal;
 import java.util.*;
 
 @Path("/uni")
+@Stateless
 @Consumes(MediaType.APPLICATION_XML)
 @Produces(MediaType.APPLICATION_XML)
+@RolesAllowed({"ADMIN", "ORG1"})
 public class UniServiceImpl implements UniService {
 
     private static Map<Integer, Uni> unies = new HashMap<>();
@@ -60,6 +69,24 @@ public class UniServiceImpl implements UniService {
         p.setId(id);
         return p;
     }
+
+    @GET
+    @Path("/getAuth")
+    public String getAuth(@HeaderParam("Authorization") String header) {
+        String base64Credentials = header.substring("Basic".length()).trim();
+        String credentials = new String(Base64.getDecoder().decode(base64Credentials),
+                Charset.forName("UTF-8"));
+        return credentials;
+    }
+
+    @GET
+    @Path("/getA")
+//    @RolesAllowed("Administrator")
+    @DenyAll
+    public String getA (){
+        return "Hello";
+    }
+
 
     @Override
     @GET
