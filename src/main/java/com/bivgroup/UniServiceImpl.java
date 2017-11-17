@@ -5,6 +5,7 @@ import com.bivgroup.Uni;
 import javax.annotation.security.DenyAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
+import javax.print.attribute.standard.Media;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -16,7 +17,8 @@ import java.util.*;
 @Path("/uni")
 @Stateless
 @Consumes(MediaType.APPLICATION_XML)
-@Produces(MediaType.APPLICATION_XML)
+//@Produces(MediaType.APPLICATION_XML)
+@Produces(MediaType.APPLICATION_JSON)
 @RolesAllowed({"ADMIN", "ORG1"})
 public class UniServiceImpl implements UniService {
 
